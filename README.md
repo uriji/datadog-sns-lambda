@@ -1,7 +1,7 @@
 # What this is
 We edited the original logmatic script when they became part of datadog, and made a small change to enable use to trigger the lambda function from AWS SNS. If you need to use the S3 trigger, instead of SNS just fund and comment this line:
 
-    event = sns_event['Records'][0]['Sns']['Message']
+    event = json.loads(sns_event['Records'][0]['Sns']['Message'])
 
 # datadog-sns-lambda
 *Link to the Datadog documentation: missing*
