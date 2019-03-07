@@ -11,7 +11,7 @@ import StringIO
 import gzip
 
 # Parameters
-logmaticKey = "<your_api_key>"
+datadog_key = "<your_api_key>"
 metadata = {
     "your_metafields": {
         "backend": "python"
@@ -20,18 +20,18 @@ metadata = {
 }
 
 # Constants
-host = "api.logmatic.io"
+host = "lambda-intake.logs.datadoghq.com"
 raw_port = 10514
 
 # SSL security
 # while creating the lambda function
 enable_security = True
-ssl_port = 10515
+ssl_port = 10516
 
 
 def lambda_handler(event, context):
     # Check prerequisites
-    if logmaticKey == "<your_api_key>" or logmaticKey == "":
+    if datadog_key == "<your_api_key>" or datadog_key == "":
         raise Exception(
                 "You must configure your API key before starting this lambda function (see #Parameters section)")
 
@@ -53,6 +53,9 @@ def lambda_handler(event, context):
     metadata["aws"]["memory_limit_in_mb"] = context.memory_limit_in_mb
 
     try:
+
+        # You can comment this line to use s3 as the trigger for this function to send
+        event = sns_event['Records'][0]['Sns']['Message']
 
         # Route to the corresponding parser
         event_type = parse_event_type(event)
@@ -163,7 +166,7 @@ def send_entry(s, log_entry):
 
     # Send to Logmatic.io
     str_entry = json.dumps(log_entry)
-    s.send((logmaticKey + " " + str_entry + "\n").encode("UTF-8"))
+    s.send((datadog_key + " " + str_entry + "\n").encode("UTF-8"))
 
 
 def merge_dicts(a, b, path=None):

@@ -1,11 +1,16 @@
-# logmatic-lambda
-*Link to the Logmatic.io documentation: http://doc.logmatic.io/docs/aws-lambda-s3*
+# What this is
+We edited the original logmatic script when they became part of datadog, and made a small change to enable use to trigger the lambda function from AWS SNS. If you need to use the S3 trigger, instead of SNS just fund and comment this line:
 
-AWS lambda function to ship ELB, S3, CloudTrail, VPC, CloudFront and CloudWatch logs to Logmatic.io
+    event = sns_event['Records'][0]['Sns']['Message']
+
+# datadog-sns-lambda
+*Link to the Datadog documentation: missing*
+
+AWS lambda function to ship ELB, S3, CloudTrail, VPC, CloudFront and CloudWatch logs to Datadog
 
 # Features
 
-- Use AWS Lambda to re-route triggered S3 events to Logmatic.io
+- Use AWS Lambda (with or without SNS) to re-route triggered S3 events to Logmatic.io
 - ELB, S3, CloudTrail, VPC and CloudFont logs can be forwarded
 - SSL Security
 - JSON events providing details about S3 documents forwarded
