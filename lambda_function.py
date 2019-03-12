@@ -55,7 +55,7 @@ def lambda_handler(event, context):
     try:
 
         # You can comment this line to use s3 as the trigger for this function to send
-        event = json.loads(sns_event['Records'][0]['Sns']['Message'])
+        event = json.loads(event['Records'][0]['Sns']['Message'])
 
         # Route to the corresponding parser
         event_type = parse_event_type(event)
